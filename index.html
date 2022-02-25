@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+      .indikatori{
+        display: inline-block;
+        width: 10%;
+        height: 10%;
+        
+      }
+      .wrapper{
+        text-align: center;
+      }
+      #led{
+          height: 200px;
+          width: 200px;
+          border-radius: 25%;
+      }
+    </style>
+</head>
+<body>
+  <div class="wrapper">
+
+  
+
+    <h3 id="parkingMjesto" class="indikatori">Parking mjesto:</h3>
+    <h3 id="ocitanjeSenzora"></h3>
+    <div id="led"></div>
+    
+    
+  </div>
+
+<!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/8.6.1/firebase.js"></script>
+
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+<script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-analytics.js"></script>
+
+<script>
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  const firebaseConfig = {
+  apiKey: "AIzaSyBfFgsClA5EIdnYUxDUPQqYKQe4hLWuPdo",
+  authDomain: "iot-parking-668d7.firebaseapp.com",
+  databaseURL: "https://iot-parking-668d7-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "iot-parking-668d7",
+  storageBucket: "iot-parking-668d7.appspot.com",
+  messagingSenderId: "897272290223",
+  appId: "1:897272290223:web:647ded9f6e5df1ceaeed5a",
+  measurementId: "G-F3533BKP66"
+};
+
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  firebase.analytics();
+  
+    var senzor = firebase.database().ref().child('Parking/senzor');
+       
+
+    senzor.on('value', (podatak) =>{ 
+        
+      ocitanjeSenzora.innerHTML = "Ocitanje senzora: " + podatak.val();
+
+      if(podatak.val() >= 50)
+      {
+        parkingMjesto.innerHTML = "Parking mjesto zauzeto";
+        document.getElementById("led").style.backgroundColor = "red";
+      }
+      else
+    {
+        parkingMjesto.innerHTML = "Parking mjesto slobodno";
+        document.getElementById("led").style.backgroundColor = "green";
+    }
+        
+        
+    }); 
+</script>
+  </body>
+</html>
